@@ -108,6 +108,26 @@ export const swaggerDefinitions = {
       get: {
         summary: 'Retrieve a list of posts',
         tags: ['Posts'],
+        parameters: [
+          {
+            in: 'query',
+            name: 'page',
+            required: false,
+            schema: {
+              type: 'integer',
+            },
+            description: 'The page number',
+          },
+          {
+            in: 'query',
+            name: 'limit',
+            required: false,
+            schema: {
+              type: 'integer',
+            },
+            description: 'The number of items per page',
+          },
+        ],
         responses: {
           200: {
             description: 'A list of posts',

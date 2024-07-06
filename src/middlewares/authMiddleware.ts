@@ -19,7 +19,13 @@ export const authenticateJWT = (req: CustomRequest, res: Response, next: NextFun
     req.user = decoded;
     next();
   } catch (error) {
-    res.status(statusCodes.FORBIDDEN).json({ message: 'Invalid token' });
+    if (error instanceof jwt.TokenExpiredError) {
+      return res.status(statusCodes.UNAUTHORIZED).json({ message: 'Token has expired. Please log in again.' });
+    } else if (error instanceof jwt.JsonWebTokenError) {
+      return res.status(statusCodes.UNAUTHORIZED).json({ message: 'Invalid token. Please log in again.' });
+    } else {
+      return res.status(statusCodes.INTERNAL_SERVER_ERROR).json({ message: 'An error occurred while processing the token.' });
+    }
   }
 };
 
